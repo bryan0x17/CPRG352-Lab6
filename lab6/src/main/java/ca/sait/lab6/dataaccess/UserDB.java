@@ -1,4 +1,4 @@
-package ca.sait.lab6.models.dataaccess;
+package ca.sait.lab6.dataaccess;
 
 import ca.sait.lab6.models.Role;
 import ca.sait.lab6.models.User;

@@ -1,4 +1,4 @@
-package ca.sait.lab6.models.dataaccess;
+package ca.sait.lab6.dataaccess;
 
 import javax.sql.DataSource;
 import javax.naming.InitialContext;
