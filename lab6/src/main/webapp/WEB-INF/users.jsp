@@ -11,6 +11,51 @@
     <body>
         <div class="container">
             <h1 class="text-center">User Management System</h1>
+            <h4 class="text-center">Add new user</h4>
+                <form action="user" method="POST">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="email" name="email">
+                                </td>
+                                <td>
+                                    <input type="text" name="firstName">
+                                </td>
+                                <td>
+                                    <input type="text" name="lastName">
+                                </td>
+                                <td>
+                                    <input type="password" name="password">
+                                </td>
+                                <td>
+                                    <select name="role">
+                                        <option value="">Please select a role</option>
+                                        <c:forEach var="role" items="${roles}">
+                                            <option value="${role.name}">${role.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="active">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm" name="action" value="add">Add</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
             <h4 class="text-center">Users</h4>
             <form action="user" method="GET" >
                 <table class="table">
@@ -31,60 +76,15 @@
                                 <td>${user.lastName}</td>
                                 <td>${user.active ? "Y" : "N"}</td>
                                 <td>
-                                    <input type="hidden" name="email" value="${user.email}">
-                                    <button type="submit" class="btn btn-primary btn-sm" name="action"  value="edit">Edit</button>
-                                    <button type="submit" class="btn btn-danger btn-sm" name="action" value="delete">Delete</button>
+                                    <button type="submit" class="btn btn-primary btn-sm" name="action"  value="edit?${user.email}">Edit</button>
+                                    <button type="submit" class="btn btn-danger btn-sm" name="action" value="delete?${user.email}">Delete</button>
                                 </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
             </form>
-            <h4 class="text-center">Add new user</h4>
-            <form action="user" method="POST">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>First name</th>
-                            <th>Last name</th>
-                            <th>Password</th>
-                            <th>Role</th>
-                            <th>Active</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="email" name="email">
-                            </td>
-                            <td>
-                                <input type="text" name="firstName">
-                            </td>
-                            <td>
-                                <input type="text" name="lastName">
-                            </td>
-                            <td>
-                                <input type="password" name="password">
-                            </td>
-                            <td>
-                                <select name="role">
-                                    <option value="">Please select a role</option>
-                                    <c:forEach var="role" items="${roles}">
-                                        <option value="${role.name}">${role.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="active">
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-primary btn-sm" name="action" value="add">Add</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
+            
             <h4 class="text-center" id="edit">Edit user</h4>
             <form action="user" method="POST">
                 <table class="table">
