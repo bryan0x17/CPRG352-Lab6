@@ -27,6 +27,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         try {
             UserService service = new UserService();
             List<User> users = service.getAll();

@@ -9,24 +9,127 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="user" items="${users}">
-                    <tr>
-                        <td>${user.email}</td>
-                        <td>${user.firstName}</td>
-                        <td>${user.lastName}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+        <div class="container">
+            <h1 class="text-center">User Management System</h1>
+            <h4 class="text-center">Users</h4>
+            <form action="user" method="GET" >
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Active</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="user" items="${users}">
+                            <tr>
+                                <td>${user.email}</td>
+                                <td>${user.firstName}</td>
+                                <td>${user.lastName}</td>
+                                <td>${user.active ? "Y" : "N"}</td>
+                                <td>
+                                    <input type="hidden" name="email" value="${user.email}">
+                                    <button type="submit" class="btn btn-primary btn-sm" name="action"  value="edit">Edit</button>
+                                    <button type="submit" class="btn btn-danger btn-sm" name="action" value="delete">Delete</button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </form>
+            <h4 class="text-center">Add new user</h4>
+            <form action="user" method="POST">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Password</th>
+                            <th>Role</th>
+                            <th>Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="email" name="email">
+                            </td>
+                            <td>
+                                <input type="text" name="firstName">
+                            </td>
+                            <td>
+                                <input type="text" name="lastName">
+                            </td>
+                            <td>
+                                <input type="password" name="password">
+                            </td>
+                            <td>
+                                <select name="role">
+                                    <option value="">Please select a role</option>
+                                    <c:forEach var="role" items="${roles}">
+                                        <option value="${role.name}">${role.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="active">
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm" name="action" value="add">Add</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <h4 class="text-center" id="edit">Edit user</h4>
+            <form action="user" method="POST">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Password</th>
+                            <th>Role</th>
+                            <th>Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="email" name="email" readonly value="${user.email}">
+                            </td>
+                            <td>
+                                <input type="text" name="firstName" value="${user.firstName}">
+                            </td>
+                            <td>
+                                <input type="text" name="lastName" value="${user.lastName}">
+                            </td>
+                            <td>
+                                <input type="password" name="password" value="${user.password}">
+                            </td>
+                            <td>
+                                <select name="role">
+                                    <option value="${user.role}">${user.role}</option>
+                                    <c:forEach var="role" items="${roles}">
+                                        <option value="${role.name}">${role.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="active">
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm" name="action" value="edit">Save</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
     </body>
 </html>
