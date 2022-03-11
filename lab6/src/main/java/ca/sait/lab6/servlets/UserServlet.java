@@ -32,6 +32,7 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        
         try {
             UserService userService = new UserService();
             List<User> users = userService.getAll();
@@ -60,42 +61,54 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if (action != null) {
-            // Add a user to the database
-            if (action.equals("add")) {
-                
-                try {
-                    
-                    String email = request.getParameter("email");
-                    boolean active = request.getParameter("active") != null;
-                    String firstName = request.getParameter("firstName");
-                    String lastName = request.getParameter("lastName");
-                    String password = request.getParameter("password");
-                    String roleName = request.getParameter("role");
-                    int roleId = 0;
+        
+        // Add a user to the database
+        if (action != null && action.equals("add")) {
+            
+            try {
 
-                    RoleService roleService = new RoleService();
-                    List<Role> roleList;
-                    roleList = roleService.getAll();
-                    
-                    for (Role role : roleList) {
-                        if (role.getName().equals(roleName)) {
-                            roleId = role.getId();
-                        }
+                String email = request.getParameter("email");
+                boolean active = request.getParameter("active") != null;
+                String firstName = request.getParameter("firstName");
+                String lastName = request.getParameter("lastName");
+                String password = request.getParameter("password");
+                String roleName = request.getParameter("role");
+                int roleId = 0;
+
+                RoleService roleService = new RoleService();
+                List<Role> roleList;
+                roleList = roleService.getAll();
+
+                for (Role role : roleList) {
+                    if (role.getName().equals(roleName)) {
+                        roleId = role.getId();
                     }
-                    
-                    if (roleId == 0) {
-                        throw new Exception("Invalid role");
-                    }
-                    
-                    Role role = new Role(roleId, roleName);
-                    UserService userService = new UserService();
-                    userService.insert(email, active, firstName, lastName, password, role);
-                    
-                } catch (Exception ex) {
-                    Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                }
+
+                if (roleId == 0) {
+                    throw new Exception("Invalid role");
+                }
+
+                Role role = new Role(roleId, roleName);
+                UserService userService = new UserService();
+                userService.insert(email, active, firstName, lastName, password, role);
+
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+        
+        } else if (action != null && action.contains("edit?")) {
+            //Initiate editing process
+            try {
+                String email = action.split("\\?", 2)[1];
+                UserService userService = new UserService();
+                User user = userService.get(email);
+                request.setAttribute("user", user);
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
         }
         try {
             UserService userService = new UserService();

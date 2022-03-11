@@ -57,7 +57,7 @@
                     </table>
                 </form>
             <h4 class="text-center">Users</h4>
-            <form action="user" method="GET" >
+            <form action="user" method="POST" >
                 <table class="table">
                     <thead>
                         <tr>
@@ -114,7 +114,7 @@
                             </td>
                             <td>
                                 <select name="role">
-                                    <option value="${user.role}">${user.role}</option>
+                                    <option value="${user.role.name}">${user.role.name}</option>
                                     <c:forEach var="role" items="${roles}">
                                         <option value="${role.name}">${role.name}</option>
                                     </c:forEach>
