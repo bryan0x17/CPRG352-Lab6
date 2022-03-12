@@ -61,6 +61,7 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        request.setAttribute("message", "");
         
         // Add a user to the database
         if (action != null && action.equals("add")) {
@@ -92,9 +93,11 @@ public class UserServlet extends HttpServlet {
                 Role role = new Role(roleId, roleName);
                 UserService userService = new UserService();
                 userService.insert(email, active, firstName, lastName, password, role);
+                request.setAttribute("message", "User added");
 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", "User addition failed! Please ensure all fields are completed and that the email is not already in use.");
             }
         
         } else if (action != null && action.contains("edit?")) {
@@ -136,10 +139,24 @@ public class UserServlet extends HttpServlet {
                 Role role = new Role(roleId, roleName);
                 UserService userService = new UserService();
                 userService.update(email, active, firstName, lastName, password, role);
+                request.setAttribute("message", "User updated");
 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", "User update failed! Please ensure all fields are completed");
             }
+            
+        } else if (action != null && action.contains("delete?")) {
+            //Delete user
+            try {
+                String email = action.split("\\?", 2)[1];
+                UserService userService = new UserService();
+                userService.delete(email);
+                request.setAttribute("message", "User deleted");
+                
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }  
         }
         try {
             UserService userService = new UserService();

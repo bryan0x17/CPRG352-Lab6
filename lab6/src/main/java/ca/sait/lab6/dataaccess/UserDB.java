@@ -108,7 +108,7 @@ public class UserDB {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
-        String sql = "UPDATE user SET `first_name` = ?,`last_name` = ?,`password` = ?,`role` = ? WHERE `email` = ?";
+        String sql = "UPDATE user SET `first_name` = ?,`last_name` = ?,`password` = ?,`role` = ?, `active` = ? WHERE `email` = ?";
         boolean updated = false;
         try {
             ps = con.prepareStatement(sql);
@@ -116,7 +116,8 @@ public class UserDB {
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getPassword());
             ps.setInt(4, user.getRole().getId());
-            ps.setString(5, user.getEmail());
+            ps.setInt(5, user.isActive()? 1 : 0);
+            ps.setString(6, user.getEmail());
             updated = ps.executeUpdate() > 0;
         } finally {
             DBUtil.closePreparedStatement(ps);
