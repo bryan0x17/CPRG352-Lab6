@@ -106,9 +106,40 @@ public class UserServlet extends HttpServlet {
                 request.setAttribute("user", user);
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        } else if (action != null && action.equals("edit")) {
+            //Edit the user in the DB
+            try {
+
+                String email = request.getParameter("email");
+                boolean active = request.getParameter("active") != null;
+                String firstName = request.getParameter("firstName");
+                String lastName = request.getParameter("lastName");
+                String password = request.getParameter("password");
+                String roleName = request.getParameter("role");
+                int roleId = 0;
+
+                RoleService roleService = new RoleService();
+                List<Role> roleList;
+                roleList = roleService.getAll();
+
+                for (Role role : roleList) {
+                    if (role.getName().equals(roleName)) {
+                        roleId = role.getId();
+                    }
+                }
+
+                if (roleId == 0) {
+                    throw new Exception("Invalid role");
+                }
+
+                Role role = new Role(roleId, roleName);
+                UserService userService = new UserService();
+                userService.update(email, active, firstName, lastName, password, role);
+
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
         }
         try {
             UserService userService = new UserService();
